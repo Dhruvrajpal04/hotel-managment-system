@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Management Dashboard - Premium Edition</title>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome (for icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dark-mode">
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <i class="fa-solid fa-hotel"></i>
+                <span>Royal Stay</span>
+            </div>
+            <ul class="nav-links">
+                <li class="active" data-page="dashboard"><i class="fa-solid fa-chart-line"></i><span>Dashboard</span>
+                </li>
+                <li data-page="rooms"><i class="fa-solid fa-bed"></i><span>Rooms</span></li>
+                <li data-page="bookings"><i class="fa-solid fa-calendar-check"></i><span>Bookings</span></li>
+                <li data-page="customers"><i class="fa-solid fa-users"></i><span>Customers</span></li>
+                <li data-page="settings"><i class="fa-solid fa-gear"></i><span>Settings</span></li>
+                <li id="logout-btn"
+                    style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;"><i
+                        class="fa-solid fa-right-from-bracket" style="color: #ff6b6b;"></i><span
+                        style="color: #ff6b6b;">Logout</span></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header>
+                <div class="header-left">
+                    <h1 id="page-title">Dashboard</h1>
+                    <p class="subtitle" id="welcome-subtitle">Welcome back, Admin</p>
+                </div>
+                <div class="header-right">
+                    <div class="search-bar">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="global-search" placeholder="Search for bookings, rooms...">
+                    </div>
+                    <div class="user-profile">
+                        <img id="user-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Admin"
+                            alt="User Avatar">
+                        <div class="user-info">
+                            <span class="name" id="user-profile-name">Admin</span>
+                            <span class="role" id="user-profile-role">Manager</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <section id="content-area">
+                <!-- Dashboard View -->
+                <div id="dashboard-view" class="page-view">
+                    <div class="dashboard-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: rgba(255, 193, 7, 0.1); color: #ffc107;">
+                                <i class="fa-solid fa-door-open"></i>
+                            </div>
+                            <div class="stat-details">
+                                <h3>Total Rooms</h3>
+                                <p class="number" id="total-rooms-count">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: rgba(40, 167, 69, 0.1); color: #28a745;">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <div class="stat-details">
+                                <h3>Available</h3>
+                                <p class="number" id="available-rooms-count">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: rgba(220, 53, 69, 0.1); color: #dc3545;">
+                                <i class="fa-solid fa-calendar-xmark"></i>
+                            </div>
+                            <div class="stat-details">
+                                <h3>Booked</h3>
+                                <p class="number" id="booked-rooms-count">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: rgba(13, 202, 240, 0.1); color: #0dcaf0;">
+                                <i class="fa-solid fa-hand-holding-dollar"></i>
+                            </div>
+                            <div class="stat-details">
+                                <h3>Total Income</h3>
+                                <p class="number" id="total-income">$0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recent-bookings-section">
+                        <div class="section-header">
+                            <h2>Recent Bookings</h2>
+                            <button class="btn btn-primary add-booking-btn"><i class="fa-solid fa-plus"></i> New
+                                Booking</button>
+                        </div>
+                        <div class="table-container glass">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Booking ID</th>
+                                        <th>Customer</th>
+                                        <th>Room</th>
+                                        <th>Check-In</th>
+                                        <th>Check-Out</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bookings-table-body">
+                                    <tr>
+                                        <td colspan="7" class="loading-cell">Loading bookings...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rooms View -->
+                <div id="rooms-view" class="page-view hidden">
+                    <div class="section-header">
+                        <h2>All Rooms</h2>
+                    </div>
+                    <div class="table-container glass">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Room ID</th>
+                                    <th>Type</th>
+                                    <th>Price / Night</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rooms-table-body">
+                                <tr>
+                                    <td colspan="4" class="loading-cell">Loading rooms...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Bookings View -->
+                <div id="bookings-view" class="page-view hidden">
+                    <div class="section-header">
+                        <h2>All Bookings</h2>
+                        <button class="btn btn-primary add-booking-btn"><i class="fa-solid fa-plus"></i> New
+                            Booking</button>
+                    </div>
+                    <div class="table-container glass">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Booking ID</th>
+                                    <th>Customer ID</th>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                    <th>Adhaar</th>
+                                    <th>Room ID</th>
+                                    <th>Check-In</th>
+                                    <th>Check-Out</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="all-bookings-table-body">
+                                <tr>
+                                    <td colspan="9" class="loading-cell">Loading bookings...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Customers View -->
+                <div id="customers-view" class="page-view hidden">
+                    <div class="section-header">
+                        <h2>Customers Database</h2>
+                        <button class="btn btn-primary" id="add-customer-btn"><i class="fa-solid fa-plus"></i> Add
+                            Customer</button>
+                    </div>
+                    <div class="table-container glass">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Cust ID</th>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                    <th>Email</th>
+                                    <th>Adhaar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="customers-table-body">
+                                <tr>
+                                    <td colspan="5" class="loading-cell">Loading customers...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Booking Modal -->
+    <div id="booking-modal" class="modal">
+        <div class="modal-content glass">
+            <span class="close" data-modal="booking-modal">&times;</span>
+            <h2>New Booking</h2>
+            <form id="booking-form">
+                <div class="form-group">
+                    <label for="book-cust-name">Name</label>
+                    <input type="text" id="book-cust-name" required placeholder="Full Name">
+                </div>
+                <div class="form-group">
+                    <label for="book-cust-phone">Phone Number</label>
+                    <input type="text" id="book-cust-phone" required placeholder="Phone Number">
+                </div>
+                <div class="form-group">
+                    <label for="book-cust-email">Email Address</label>
+                    <input type="email" id="book-cust-email" required placeholder="Email Address">
+                </div>
+                <div class="form-group">
+                    <label for="book-cust-adhaar">Adhaar Number</label>
+                    <input type="text" id="book-cust-adhaar" required placeholder="12-digit Adhaar">
+                </div>
+                <div class="form-group">
+                    <label for="room-id">Room ID</label>
+                    <input type="number" id="room-id" required placeholder="Enter room ID">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary cancel-modal"
+                        data-modal="booking-modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Book Now</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Customer Modal -->
+    <div id="customer-modal" class="modal">
+        <div class="modal-content glass">
+            <span class="close" data-modal="customer-modal">&times;</span>
+            <h2>Add Customer</h2>
+            <form id="customer-form">
+                <div class="form-group">
+                    <label for="cust-name">Name</label>
+                    <input type="text" id="cust-name" required placeholder="Full Name">
+                </div>
+                <div class="form-group">
+                    <label for="cust-phone">Phone Number</label>
+                    <input type="text" id="cust-phone" required placeholder="Phone Number">
+                </div>
+                <div class="form-group">
+                    <label for="cust-email">Email Address</label>
+                    <input type="email" id="cust-email" required placeholder="Email Address">
+                </div>
+                <div class="form-group">
+                    <label for="cust-adhaar">Adhaar Number</label>
+                    <input type="text" id="cust-adhaar" required placeholder="12-digit Adhaar">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary cancel-modal"
+                        data-modal="customer-modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Customer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkout-modal" class="modal">
+        <div class="modal-content glass">
+            <span class="close" data-modal="checkout-modal">&times;</span>
+            <h2><i class="fa-solid fa-receipt"></i> Checkout Summary</h2>
+            <div id="checkout-details" style="margin: 2rem 0; font-size: 1.1rem; color: #e6edf3;">
+                <!-- Bill will be displayed here -->
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-primary cancel-modal" data-modal="checkout-modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
