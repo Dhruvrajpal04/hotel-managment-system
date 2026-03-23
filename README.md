@@ -1,114 +1,60 @@
-[npm-image]: https://img.shields.io/npm/v/mysql2.svg
-[npm-url]: https://npmjs.com/package/mysql2
-[node-version-image]: https://img.shields.io/node/v/mysql2.svg
-[node-version-url]: https://nodejs.org/en/download
-[downloads-image]: https://img.shields.io/npm/dm/mysql2.svg
-[downloads-url]: https://npmjs.com/package/mysql2
-[license-url]: https://github.com/sidorares/node-mysql2/blob/master/License
-[license-image]: https://img.shields.io/npm/l/mysql2.svg?maxAge=2592000
-[node-mysql]: https://github.com/mysqljs/mysql
-[mysqljs]: https://github.com/mysqljs
-[mysql-native]: https://github.com/sidorares/nodejs-mysql-native
-[sidorares]: https://github.com/sidorares
-[TooTallNate]: https://gist.github.com/TooTallNate
-[starttls.js]: https://gist.github.com/TooTallNate/848444
-[node-mariasql]: https://github.com/mscdex/node-mariasql
-[contributors]: https://github.com/sidorares/node-mysql2/graphs/contributors
-[contributing]: https://github.com/sidorares/node-mysql2/blob/master/Contributing.md
-[docs-base]: https://sidorares.github.io/node-mysql2/docs
-[docs-base-zh-CN]: https://sidorares.github.io/node-mysql2/zh-CN/docs
-[docs-base-pt-BR]: https://sidorares.github.io/node-mysql2/pt-BR/docs
-[docs-prepared-statements]: https://sidorares.github.io/node-mysql2/docs/documentation/prepared-statements
-[docs-mysql-server]: https://sidorares.github.io/node-mysql2/docs/documentation/mysql-server
-[docs-promise-wrapper]: https://sidorares.github.io/node-mysql2/docs/documentation/promise-wrapper
-[docs-authentication-switch]: https://sidorares.github.io/node-mysql2/docs/documentation/authentication-switch
-[docs-streams]: https://sidorares.github.io/node-mysql2/docs/documentation/extras
-[docs-typescript-docs]: https://sidorares.github.io/node-mysql2/docs/documentation/typescript-examples
-[docs-qs-pooling]: https://sidorares.github.io/node-mysql2/docs#using-connection-pools
-[docs-qs-first-query]: https://sidorares.github.io/node-mysql2/docs#first-query
-[docs-qs-using-prepared-statements]: https://sidorares.github.io/node-mysql2/docs#using-prepared-statements
-[docs-examples]: https://sidorares.github.io/node-mysql2/docs/examples
-[docs-faq]: https://sidorares.github.io/node-mysql2/docs/faq
-[docs-documentation]: https://sidorares.github.io/node-mysql2/docs/documentation
-[docs-contributing]: https://sidorares.github.io/node-mysql2/docs/contributing/website
-[coverage]: https://img.shields.io/codecov/c/github/sidorares/node-mysql2
-[coverage-url]: https://app.codecov.io/github/sidorares/node-mysql2
-[ci-url]: https://github.com/sidorares/node-mysql2/actions/workflows/ci-coverage.yml?query=branch%3Amaster
-[ci-image]: https://img.shields.io/github/actions/workflow/status/sidorares/node-mysql2/ci-coverage.yml?event=push&style=flat&label=CI&branch=master
+# Hotel Management System
 
-# MySQL2
+A full-stack Hotel Management System built with Node.js, Express, MySQL, and standard HTML/CSS/JS. This application allows hotel staff to manage room bookings, customers, and checkouts quickly and efficiently.
 
-[![NPM Version][npm-image]][npm-url]
-[![NPM Downloads][downloads-image]][downloads-url]
-[![Node.js Version][node-version-image]][node-version-url]
-[![GitHub Workflow Status (with event)][ci-image]][ci-url]
-[![Codecov][coverage]][coverage-url]
-[![License][license-image]][license-url]
+## Features
 
-[English][docs-base] | [简体中文][docs-base-zh-CN] | [Português (BR)][docs-base-pt-BR]
+- **User Authentication:** Login capabilities for different user roles (e.g., admin, receptionist).
+- **Room Management:** View all hotel rooms and their current statuses in real-time.
+- **Customer Tracking:** Register new guests, capturing details such as Name, Phone, Email, and Aadhaar ID.
+- **Booking System:** Seamlessly assign rooms to guests. The system automatically marks booked rooms to prevent double-booking.
+- **Checkout & Billing:** Quickly process checkouts. The system automatically calculates total bills based on room rent and length of stay, unassigning the room for future bookings.
 
-> MySQL client for Node.js with focus on performance. Supports prepared statements, non-utf8 encodings, binary log protocol, compression, ssl [much more][docs-documentation].
+## Tech Stack
 
-**Table of Contents**
+- **Frontend:** HTML5, CSS, Vanilla JavaScript
+- **Backend:** Node.js, Express.js
+- **Database:** MySQL
+- **Key Modules:** `body-parser`, `cors`, `express`, `mysql2`
 
-- [History and Why MySQL2](#history-and-why-mysql2)
-- [Installation](#installation)
-- [Documentation](#documentation)
-- [Acknowledgements](#acknowledgements)
-- [Contributing](#contributing)
+## Prerequisites
 
-## History and Why MySQL2
+Make sure you have the following software installed on your machine:
+- [Node.js](https://nodejs.org/) (which includes npm)
+- A local [MySQL Server](https://dev.mysql.com/downloads/mysql/) or a stack like [XAMPP](https://www.apachefriends.org/index.html)
 
-MySQL2 project is a continuation of [MySQL-Native][mysql-native]. Protocol parser code was rewritten from scratch and api changed to match popular [Node MySQL][node-mysql]. MySQL2 team is working together with [Node MySQL][node-mysql] team to factor out shared code and move it under [mysqljs][mysqljs] organization.
+## Database Configuration
 
-MySQL2 is mostly API compatible with [Node MySQL][node-mysql] and supports majority of features. MySQL2 also offers these additional features:
+1. Open your MySQL environment (like MySQL Workbench, phpMyAdmin, or your terminal).
+2. Create a new database named `hotel_management`:
+   ```sql
+   CREATE DATABASE hotel_management;
+   USE hotel_management;
+   ```
+3. Create the required tables (if not already provided in a `.sql` file): `users`, `rooms`, `customers`, and `bookings`. 
+4. Verify your database connection settings in `server.js`. Update the password if needed to match yours:
+   ```javascript
+   const db = mysql.createConnection({
+       host: 'localhost',
+       user: 'root',
+       password: 'Dhruv@4567', // <-- Update if your DB password is different
+       database: 'hotel_management'
+   });
+   ```
 
-- Faster / Better Performance
-- [Prepared Statements][docs-prepared-statements]
-- MySQL Binary Log Protocol
-- [MySQL Server][docs-mysql-server]
-- Extended support for Encoding and Collation
-- [Promise Wrapper][docs-promise-wrapper]
-- Compression
-- SSL and [Authentication Switch][docs-authentication-switch]
-- [Custom Streams][docs-streams]
-- [Pooling][docs-qs-pooling]
+## Running the Application
 
-## Installation
+1. Open a terminal in the project directory (e.g., `c:\HotelManagementSystem`).
+2. Install the necessary Node dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the application backend server:
+   ```bash
+   npm start
+   # or run: node server.js
+   ```
+4. The API and Frontend server will boot up. Open your preferred web browser and navigate to:
+   [http://localhost:3000](http://localhost:3000)
 
-MySQL2 is free from native bindings and can be installed on Linux, Mac OS or Windows without any issues.
-
-```bash
-npm install --save mysql2
-```
-
-If you are using TypeScript, you will need to install `@types/node`.
-
-```bash
-npm install --save-dev @types/node
-```
-
-> For TypeScript documentation and examples, see [here][docs-typescript-docs].
-
-## Documentation
-
-- [Quickstart][docs-base]
-  - [First Query][docs-qs-first-query], [Using Prepared Statements][docs-qs-using-prepared-statements], [Using Connection Pools][docs-qs-pooling] and more.
-- [Documentation][docs-documentation]
-- [Examples][docs-examples]
-- [FAQ][docs-faq]
-
-## Acknowledgements
-
-- Internal protocol is written by [@sidorares][sidorares] [MySQL-Native][mysql-native].
-- Constants, SQL parameters interpolation, Pooling, `ConnectionConfig` class taken from [Node MySQL][node-mysql].
-- SSL upgrade code based on [@TooTallNate][TooTallNate] [code][starttls.js].
-- Secure connection / compressed connection api flags compatible to [MariaSQL][node-mariasql] client.
-- [Contributors][contributors].
-
-## Contributing
-
-Want to improve something in **MySQL2**?
-Please check [Contributing.md][contributing] for detailed instruction on how to get started.
-
-To contribute in **MySQL2 Documentation**, please visit the [Website Contributing Guidelines][docs-contributing] for detailed instruction on how to get started.
+Your application is now successfully running locally! Enjoy managing your hotel!
